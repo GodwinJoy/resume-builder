@@ -14,45 +14,48 @@ import {addDownloadHistoryAPI} from '../services/allAPI'
 import { useState } from 'react';
 
 
-function Preview({userInput,finish}) {
+function Preview({userInput,setUserInput,finish,resumeId}) {
   // console.log(userInput);
-const[downloadStatus,setDownloadStatus]=useState(false)
-  
 
-  const downloadCV=async()=>{
+
+const [downloadStatus,setDownloadStatus] = useState(false)
+
+
+
+
+
+  async function downloadCV() {
     // get the element for taking screenshot
     // alert("download started")
-    const input=document.getElementById("result")
-    const canvas=await html2canvas(input,{scale:2})
-    const imgURL=canvas.toDataURL('image/png')
+    const input = document.getElementById("result");
+    const canvas = await html2canvas(input, { scale: 2 });
+    const imgURL = canvas.toDataURL('image/png');
     // console.log(imgURL);
-    const pdf=new jsPDF();
-    const pdfWidth=pdf.internal.pageSize.getWidth();
-    const pdfHeight=pdf.internal.pageSize.getHeight()
-    pdf.addImage(imgURL,'PNG',0,0,pdfWidth,pdfHeight)
-    pdf.save('resume.pdf')
-  
+    const pdf = new jsPDF();
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgURL, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('resume.pdf');
 
-  // to get data
-  const localTimeData=new Date()
-  const timestamp=`${localTimeData.toLocaleDateString()},${localTimeData.toLocaleTimeString()}`
-  // console.log(timestamp);
 
-  // add download cv to json using api call
-  
-  try{
-    const result= await addDownloadHistoryAPI({...userInput,imgURL,timestamp})
-    console.log(result);
-    setDownloadStatus(true)
-    
+    // to get data
+    const localTimeData = new Date();
+    const timestamp = `${localTimeData.toLocaleDateString()},${localTimeData.toLocaleTimeString()}`;
+    // console.log(timestamp);
+    // add download cv to json using api call
+    try {
+      const result = await addDownloadHistoryAPI({ ...userInput, imgURL, timestamp });
+      console.log(result);
+      setDownloadStatus(true);
+
+    }
+    catch (err) {
+      console.log(err);
+
+
+    }
+
   }
-  catch(err){
-    console.log(err);
-    
-
-  }
-  
-}
   return (
     <>
     {
@@ -60,18 +63,22 @@ const[downloadStatus,setDownloadStatus]=useState(false)
         <div className='flex flex-column'>
         {finish &&
           <Stack direction={'row'} sx={{justifyContent:'center'}} style={{marginTop:'100px'}}>
-          <Stack direction={'row'} sx={{alignItems:'center', marginTop:'20px'}}> 
+          <Stack direction={'row'} sx={{alignItems:'center', marginTop:'50px'}}> 
             {/* download */}
             <button onClick={downloadCV} className='btn fs-3 text-primary' style={{color:'blue'}}><FaDownload /></button>
             {/* edit buttons view from edit component*/}
+            <div> <Edit setUpdateUserInput={setUserInput} resumeId={resumeId} /></div>
             
-            {downloadStatus &&
-             <>
-               <div> <Edit/></div>
-         
-              {/* history */}
-              <Link to={'/history'} className='btn fs-3 text-primary' style={{color:'blue'}}><FaHistory /></Link>
+
+            {
+            downloadStatus &&
+             
+             <> 
+             {/* history */}
+             <Link to={'/history'} className='btn fs-3 text-primary' style={{color:'blue'}}><FaHistory /></Link>
              </>
+              
+             
             }
 
             {/* back button */}
@@ -87,9 +94,9 @@ const[downloadStatus,setDownloadStatus]=useState(false)
               <p><span>{userInput.personalData.location}</span>|<span>{userInput.personalData.email}</span>|<span>{userInput.personalData.phone}</span></p>
   
               <p>
-                  <Link href={""}>{userInput.personalData.gitHub}Github</Link>|
-                  <Link href={""}>{userInput.personalData.linkedIn}Linkedin</Link>|
-                  <Link href={""}>{userInput.personalData.portfolio}portfolio</Link>
+                  <Link href={""}>{userInput.personalData.gitHub}</Link>|
+                  <Link href={""}>{userInput.personalData.linkedIn}</Link>|
+                  <Link href={""}>{userInput.personalData.portfolio}</Link>
               </p>
               
               <Divider sx={{fontSize:'25px'}}>Summary</Divider>

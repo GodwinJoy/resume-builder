@@ -10,7 +10,7 @@ import { FaInstagram } from "react-icons/fa";
 
 function Footer() {
   return (
-    <div style={{height:'300px' ,background:'blue',color:'white'}} className='d-flex justify-content-center align-items-center'>
+    <div style={{height:'300px' ,background:'blue',color:'white', marginTop:'100px'}} className='d-flex justify-content-center align-items-center'>
       <div className='text-center'>
         <h1>Contact Us</h1>
         <h4><CiMail /> godwin@gmail.com</h4>

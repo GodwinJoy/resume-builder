@@ -8,7 +8,11 @@ import commonAPI from "./commonAPI.JS"
 export const addResumeAPI= async(resume)=>{
     return await commonAPI("POST",`${BASEURL}/all-resume`,resume)
 }
-// to edit resume api-PUT
+
+// to edit resume api-PUT.called by edit component after clicking update button in modal
+export const editResumeAPI=async(id,resume)=>{
+    return await commonAPI("PUT",`${BASEURL}/all-resume/${id}`,resume)
+}
 
 
 // to add resume to historyapi -POST-called by preview component when finish button is clicked
@@ -31,4 +35,10 @@ export const getHistoryAPI=async()=>{
 
 export const deleteHistoryAPI=async(id)=>{
     return await commonAPI('DELETE',`${BASEURL}/history/${id}`,{})
+}
+
+
+// getAResumeAPI-GET .it is called by edit component when it is opened in browser
+export const getAResumeAPI = async(id)=>{
+    return await commonAPI("GET",`${BASEURL}/all-resume/${id}`,{})
 }

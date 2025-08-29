@@ -14,7 +14,7 @@ import { addResumeAPI } from '../services/allAPI';
 const steps = ['Basic Information', ' Contact Details', 'Education Details','Work Experience','Skills & Certifications','Review & Submit'];
 
           
-function Steps({userInput,setUserInput,setFinish}) {
+function Steps({userInput,setUserInput,setFinish,setResumeId}) {
   const skillSuggestionArray=['NODEJS','EXPRESS','REACT','ANGULAR','NEXTJS','BOOTSTRAP','TAILWIND','CSS','GIT']
     const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -179,7 +179,7 @@ const removeSkill=(skill)=>{
         <div>
           <h3>Professional Summary</h3>
           <div className='d-flex row p-3'>
-          <TextField id="standard-basic-summary" label="Write a short summary of yourself" multiline rows={4} defaultValue={'Enthusiastic and detail-oriented MERN Stack Web Developer with strong skills in MongoDB, Express.js, React.js, and Node.js. Proficient in building responsive web applications, creating RESTful APIs, and integrating databases. Strong foundation in JavaScript, HTML, CSS, and eager to apply problem-solving abilities to deliver clean, efficient, and scalable code. Passionate about learning emerging technologies and contributing to innovative projects in collaborative team environments.'} variant="standard"  onChange={e=>setUserInput({...userInput,summary:e.target.value})} value={userInput.summary}/>
+          <TextField id="standard-basic-summary" label="Write a short summary of yourself" multiline rows={4} defaultValue={'Enthusiastic and detail-oriented MERN Stack Web Developer with strong skills in MongoDB, Express.js, React.js, and Node.js. Proficient in building responsive web applications, creating RESTful APIs, and integrating databases. Strong foundation in JavaScript, HTML, CSS, and eager to apply problem-solving abilities to deliver clean, efficient, and scalable code. Passionate about learning emerging technologies and contributing to innovative projects in collaborative team environments.'} variant="standard"  onChange={e=>setUserInput({...userInput,summary:e.target.value})}/>
           </div>
         </div>
       )
@@ -187,7 +187,7 @@ default:return null
     }
   }
 
-  // to handle add resume
+  // to handle add resume to add-resume server
 
   const handleAddResume =async()=>{
     // alert ("API called")
@@ -197,8 +197,12 @@ default:return null
       // alert("API called")
       try{
         const result=await addResumeAPI(userInput)
-        console.log(result);
-        swal ("sucess!","Resume added successfully","sucess");
+        // console.log(result);
+        // to get the id of the resume to edit
+        setResumeId(result?.data?.id)
+        console.log(result?.data?.id);
+        
+        swal ("Success!","Resume added successfully","sucess");
         setFinish(true)
       }
       catch(err){

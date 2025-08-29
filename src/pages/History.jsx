@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { MdDelete } from "react-icons/md";
-import { getHistoryAPI } from '../services/allAPI';
+import { deleteHistoryAPI, getHistoryAPI } from '../services/allAPI';
 
 
 function History() {
@@ -17,7 +17,7 @@ function History() {
   // so we seperately create a useeffect outside the gethistory function,inside it we call the gethistoryfunction as sideffect ,whenever that component is opened in the browser
   useEffect(()=>{
     getHistory()
-  },[])
+  },[resume])
 
   // we create an async function to call api for gethistoryAPI,since ii is an async function we cannot use use effect inside this function-or else we have to use then(),and code becomes complex
   const getHistory=async()=>{
@@ -32,7 +32,18 @@ function History() {
     }
   }
 
-  console.log(resume);
+  // console.log(resume);
+
+ const handleRemoveHistory=async(id)=>{
+  try{
+    await deleteHistoryAPI(id)
+    getHistory()
+  }
+  catch(err){
+    console.log(err);
+    
+  }
+ }
   
   return (
     <div>
@@ -50,7 +61,7 @@ function History() {
                 <Paper elevation={3} sx={{my:5, p: 2,textAlign:'center' }}>
                   <h6>Review at: <br/>{item?.timestamp}</h6>
                   <div className='d-flex justify-content-center align-items-center'>
-                    <button className='btn text-danger fs-5'><MdDelete /></button>
+                    <button onClick={()=>handleRemoveHistory(item?.id)} className='btn text-danger fs-5'><MdDelete /></button>
                     </div>
                     {/* to display the whole content of resume as image in history */}
                   <div className='border rounded p-5'>
