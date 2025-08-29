@@ -1,6 +1,6 @@
 
 import BASEURL from "./baseUrl"
-import commonAPI from "./commonAPI.JS"
+import commonAPI from "./commonAPI.js"
 //to add resumeAPI-POST-done after user clicks finish button in stepper-so in step component
 
 
